@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://e7dr11nweufd"]
+
+[ext_resource type="Script" uid="uid://fljf34au34rm" path="res://src/emitters/light_emitter/light_emitter.gd" id="1_vflgm"]
+
+[node name="LightEmitter" type="Node2D"]
+script = ExtResource("1_vflgm")
+colors = PackedColorArray(1, 1, 1, 1)

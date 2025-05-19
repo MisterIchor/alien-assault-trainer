@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="TargetInitializer" load_steps=2 format=3 uid="uid://cdwiy8xjj07te"]
+
+[ext_resource type="Script" uid="uid://bpq6w4vdcv1cw" path="res://src/global/target_initializer/target_initializer.gd" id="1_xyueq"]
+
+[resource]
+script = ExtResource("1_xyueq")
+metadata/_custom_type_script = "uid://bpq6w4vdcv1cw"

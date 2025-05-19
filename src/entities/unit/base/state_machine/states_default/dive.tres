@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="UnitState" load_steps=2 format=3 uid="uid://c13y8ewqyf5y7"]
+
+[ext_resource type="Script" uid="uid://cphtcieyjaamj" path="res://src/entities/unit/base/state_machine/unit_state.gd" id="1_0wre2"]
+
+[resource]
+resource_name = "dive"
+script = ExtResource("1_0wre2")
+name = "dive"
+trans-timeout/time_in_state = 0.2
+trans-timeout/next_state = "slide"
+trans-run/start = ""
+trans-run/stop = ""
+trans-sprint/start = ""
+trans-sprint/stop = ""
+trans-aim/start = ""
+trans-aim/stop = ""
+trans-dodge/start = ""
+trans-collision/collided = ""
+trans-health/critical = ""
+trans-health/incapacitated = ""
+conval-health/regen_cap_mod = 1.0
+conval-health/regen_rate = 0.0
+conval-stamina/regen_cap_mod = 1.0
+conval-stamina/regen_rate = 0.0
+conval-stamina/regen_rate_moving = -1337.0
+conval-combat/melee_damage_mod = 1.0
+conval-combat/ranged_accuracy_mod = 1.0
+conval-movement/type = 0
+conval-movement/default_speed_mod = 4.0
+conval-interaction/allow_pickup = false
+conval-interaction/allow_drop = false
+conval-interaction/allow_env_interaction = false
+conval-interaction/allow_equipped_item_interaction = false
+conval-animation/head_look_at = 0
+conval-animation/body_procedural_speed = {
+&"body_lower": 0.75,
+&"body_upper": 0.75,
+&"head": 0.75
+}
+conval-animation/animation_to_play = null
+metadata/_custom_type_script = "uid://cphtcieyjaamj"

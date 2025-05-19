@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ItemTemplate" load_steps=5 format=3 uid="uid://v7gorrcxhnje"]
+
+[ext_resource type="Script" uid="uid://rro54tc0m7lg" path="res://src/entities/item/base/template/template_item.gd" id="1_hflxc"]
+[ext_resource type="Script" uid="uid://vcj6efbaleuy" path="res://src/entities/item/created_items/weapons/weapon_ranged/weapon_ranged_setup.gd" id="4_ik662"]
+[ext_resource type="Texture2D" uid="uid://c8sjqrpptkv07" path="res://icon.svg" id="6_rhtw7"]
+
+[sub_resource type="Resource" id="Resource_ic7dt"]
+script = ExtResource("1_hflxc")
+type = ""
+weight = 0
+collision_poly = PackedVector2Array()
+configurable_values = Dictionary[String, Variant]({})
+
+[resource]
+script = ExtResource("1_hflxc")
+type = "bazinga"
+sprite_world = ExtResource("6_rhtw7")
+sprite_equipped = ExtResource("6_rhtw7")
+weight = 0
+collision_poly = PackedVector2Array(-9, -9, 9, -9, 9, 9, -9, 9)
+setup_script = ExtResource("4_ik662")
+configurable_values = Dictionary[String, Variant]({
+"ammo_used": SubResource("Resource_ic7dt"),
+"attack_delay": -1.0,
+"capacity": 30,
+"length": 20.0,
+"rechamber_after_each_shot": false,
+"rechamber_speed": 1.0,
+"reload_one_at_a_time": false,
+"reload_speed": 2.0
+})

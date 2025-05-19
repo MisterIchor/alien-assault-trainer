@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://b14i3s0en1y23"]
+
+[ext_resource type="Script" uid="uid://bpvevv7ggtptj" path="res://src/entities/base/state_machine/entity.gd" id="1_2ol82"]
+[ext_resource type="Script" uid="uid://5ijf2exeu2e7" path="res://src/entities/base/state_machine/entity_state_machine.gd" id="2_klexf"]
+
+[node name="Entity" type="Node2D"]
+script = ExtResource("1_2ol82")
+
+[node name="EntityStateMachine" type="Node" parent="."]
+script = ExtResource("2_klexf")
+metadata/_custom_type_script = "uid://5ijf2exeu2e7"

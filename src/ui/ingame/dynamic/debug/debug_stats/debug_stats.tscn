@@ -1,0 +1,45 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqrvy53mebwhq"]
+
+[ext_resource type="Script" uid="uid://d3tkeytd15hs0" path="res://src/ui/ingame/dynamic/debug/debug_stats/debug_stats.gd" id="1_re8e0"]
+
+[node name="DebugStats" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+scale = Vector2(0.695, 0.695)
+mouse_filter = 2
+script = ExtResource("1_re8e0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="HealthLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Health:"
+
+[node name="StaminaLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Stamina:"
+
+[node name="SpeedLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Speed:"
+
+[node name="LookAngleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Look Angle:"
+
+[node name="EquippedItemLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Equipped Item:"
+
+[node name="InventoryLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Inventory: "
+autowrap_mode = 3
+
+[node name="CurrentStateLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Current State:"

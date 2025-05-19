@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://c57d1m07g7fln"]
+
+[ext_resource type="Script" uid="uid://b34uwej7oa3gr" path="res://src/ui/ingame/dynamic/debug/debug_hud/debug_hud.gd" id="1_3qdmw"]
+
+[node name="DebugHud" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_3qdmw")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+alignment = 1
+
+[node name="HealthLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Health:"
+
+[node name="StaminaLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Stamina:"
+
+[node name="SpeedLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Speed:"
+
+[node name="LookAngleLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Look Angle:"
+
+[node name="EquippedItemLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Equipped Item:"
+
+[node name="CurrentStateLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current State:"

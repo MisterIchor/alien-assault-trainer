@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bm17lsdv0358i"]
+
+[ext_resource type="Script" uid="uid://dlwmhgv147d6q" path="res://src/test/weapon_test.gd" id="1_76u8o"]
+[ext_resource type="PackedScene" uid="uid://cqaa4puxxoowe" path="res://src/entities/item/base/item.tscn" id="2_jimh7"]
+
+[node name="WeaponTest" type="Node2D"]
+script = ExtResource("1_76u8o")
+
+[node name="Item" parent="." instance=ExtResource("2_jimh7")]

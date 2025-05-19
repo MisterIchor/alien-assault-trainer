@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://baryh8gpx1bqf"]
+
+[ext_resource type="Script" uid="uid://vtt1ifkbuyd5" path="res://src/ui/ingame/dynamic/chat_ingame/chat.gd" id="1_h6d3k"]
+
+[node name="ChatIngame" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 0
+script = ExtResource("1_h6d3k")
+
+[node name="MessageBox" type="LineEdit" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -90.0
+offset_top = 37.0
+offset_right = 90.0
+offset_bottom = 68.0
+grow_horizontal = 2
+mouse_filter = 1
+placeholder_text = "Enter message here..."
+context_menu_enabled = false
+middle_mouse_paste_enabled = false
+
+[node name="Messages" type="Control" parent="."]
+anchors_preset = 0
+offset_top = -60.0
+offset_bottom = -60.0

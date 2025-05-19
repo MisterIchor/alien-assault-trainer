@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://ch78q0jlskpdi"]
+
+[ext_resource type="Script" uid="uid://2onvjqedsltm" path="res://src/game/game.gd" id="1_5k7lf"]
+[ext_resource type="PackedScene" uid="uid://ro5cwecg6vkb" path="res://src/world/world.tscn" id="2_184vj"]
+[ext_resource type="PackedScene" uid="uid://cqk6u5dxdkh4m" path="res://src/ui/ingame/unit_interface.tscn" id="3_42o2j"]
+
+[node name="Game" type="Node"]
+script = ExtResource("1_5k7lf")
+
+[node name="Timer" type="Timer" parent="."]
+process_callback = 0
+autostart = true
+
+[node name="World" parent="." instance=ExtResource("2_184vj")]
+
+[node name="UnitInterface" parent="." instance=ExtResource("3_42o2j")]

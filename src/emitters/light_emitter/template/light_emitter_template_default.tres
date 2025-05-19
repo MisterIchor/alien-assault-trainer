@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="LightEmitterTemplate" load_steps=4 format=3 uid="uid://buwh6sln3ru1g"]
+
+[ext_resource type="Script" uid="uid://bbuyh851wjkp2" path="res://src/emitters/light_emitter/template/light_emitter_template.gd" id="1_fkoyc"]
+
+[sub_resource type="Gradient" id="Gradient_m0r0f"]
+offsets = PackedFloat32Array(0.5, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_heud0"]
+gradient = SubResource("Gradient_m0r0f")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.85, 0.15)
+
+[resource]
+script = ExtResource("1_fkoyc")
+layers = [{
+&"energy_base": 1.0,
+&"offset": Vector2(-3.845, 0),
+&"rotation_y_dir": 1,
+&"rotation_y_offset": 0.0,
+&"rotation_y_speed_base": 1.0,
+&"rotation_z_dir": 1,
+&"rotation_z_offset": 0.0,
+&"rotation_z_speed_base": 1.0,
+&"scale_base": 1.0,
+&"shadow_mask": 0,
+&"texture": SubResource("GradientTexture2D_heud0")
+}]
+layer_0-texture = SubResource("GradientTexture2D_heud0")
+layer_0_transform-offset = Vector2(-3.845, 0)
+layer_0_transform-rotation_y_offset = 0.0
+layer_0_transform-rotation_z_offset = 0.0
+layer_0_transform-scale_base = 1.0
+layer_0_animation-rotation_y_speed_base = 1.0
+layer_0_animation-rotation_z_speed_base = 1.0
+layer_0_misc-shadow_mask = 0
+layer_0_misc-energy_base = 1.0
+metadata/_custom_type_script = "uid://bbuyh851wjkp2"

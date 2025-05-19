@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="UnitState" load_steps=2 format=3 uid="uid://dyxevkkxv2shj"]
+
+[ext_resource type="Script" uid="uid://blvlbne1srrqf" path="res://src/entities/unit/base/state_machine/unit_state_amogus.gd" id="1_hg2o3"]
+
+[resource]
+resource_local_to_scene = true
+resource_name = "Sprint"
+script = ExtResource("1_hg2o3")
+name = "Sprint"
+prefix = ""
+time_in_state = -1.0
+on_run_start = ""
+on_run_stop = "Idle"
+on_run_ignore_prefix = false
+on_aim_start = ""
+on_aim_stop = ""
+on_aim_ignore_prefix = false
+on_sprint_start = ""
+on_sprint_stop = "Run"
+on_sprint_ignore_prefix = false
+on_dodge = "Dive"
+on_dodge_ignore_prefix = false
+on_timeout = ""
+on_timeout_ignore_prefix = false
+on_health_critical = ""
+on_incapacitated = ""
+on_health_ignore_prefix = false
+on_collision = ""
+on_collision_ignore_prefix = false
+health_cost = 0.0
+health_regen_cap_mod = 1.0
+health_regen_rate = 0.0
+stamina_cost = 0.0
+stamina_regen_cap_mod = 1.0
+stamina_regen_rate = -0.5
+stamina_regen_rate_moving = -1337.0
+melee_damage_mod = 1.0
+ranged_accuracy_mod = 1.0
+movement_type = 0
+default_speed_mod = 2.0
+allow_pickup = true
+allow_drop = true
+allow_env_interaction = true
+allow_equipped_item_interaction = true
+head_look_at = 0
+body_procedural_speed = {
+"body_lower": 0.09,
+"body_upper": 0.12,
+"head": 0.15
+}
+configurable_values = {}

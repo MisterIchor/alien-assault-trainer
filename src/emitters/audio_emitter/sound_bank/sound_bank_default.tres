@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SoundBank" load_steps=4 format=3 uid="uid://crnkaa17h5mkq"]
+
+[ext_resource type="AudioStream" uid="uid://b1xj835m7bji7" path="res://assets/sound/sound_bank_sound_test.mp3" id="1_5w43j"]
+[ext_resource type="Script" uid="uid://bwflbdvlrqoq0" path="res://src/emitters/audio_emitter/sound_bank/sound_bank.gd" id="1_872wk"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_g04ng"]
+streams_count = 1
+stream_0/stream = ExtResource("1_5w43j")
+
+[resource]
+script = ExtResource("1_872wk")
+_category_name = ""
+_add_category = false
+_category = {
+"test": SubResource("AudioStreamRandomizer_g04ng")
+}

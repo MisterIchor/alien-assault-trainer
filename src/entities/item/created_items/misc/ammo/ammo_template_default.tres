@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemTemplate" load_steps=5 format=3 uid="uid://q550g7p8x7qt"]
+
+[ext_resource type="Script" uid="uid://baovw15d70sls" path="res://src/entities/item/base/state_machine/item_state.gd" id="1_gtdht"]
+[ext_resource type="Script" uid="uid://bvur4tru8pfs0" path="res://src/entities/item/base/state_machine/states_default/item_state_empty.gd" id="2_kbi1n"]
+[ext_resource type="Script" uid="uid://rro54tc0m7lg" path="res://src/entities/item/base/template/template_item.gd" id="3_5hpos"]
+[ext_resource type="Script" uid="uid://cipyee3bk0cma" path="res://src/entities/item/created_items/misc/ammo/ammo_setup.gd" id="4_fehk3"]
+
+[resource]
+script = ExtResource("3_5hpos")
+type = "Ammo"
+weight = 0
+collision_poly = PackedVector2Array()
+item_states = {
+"idle": ExtResource("1_gtdht"),
+"primary": ExtResource("2_kbi1n"),
+"secondary": ExtResource("2_kbi1n")
+}
+setup_script = ExtResource("4_fehk3")
+configurable_values = {
+"damage": 0,
+"force": 400
+}

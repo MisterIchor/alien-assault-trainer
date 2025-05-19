@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://bdi1liwmn3evx"]
+
+[ext_resource type="Script" uid="uid://bg66dy5n2fpst" path="res://src/projectile/projectile.gd" id="1_niosk"]
+[ext_resource type="Script" uid="uid://qeqo0epyhch8" path="res://src/emitters/audio_emitter/audio_emitter.gd" id="2_d1vdg"]
+[ext_resource type="Texture2D" uid="uid://c8sjqrpptkv07" path="res://icon.svg" id="2_qbv6m"]
+[ext_resource type="Resource" uid="uid://crnkaa17h5mkq" path="res://src/emitters/audio_emitter/sound_bank/sound_bank_default.tres" id="3_k40va"]
+
+[node name="Projectile" type="RayCast2D"]
+z_as_relative = false
+target_position = Vector2(25, 0)
+collide_with_bodies = false
+script = ExtResource("1_niosk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("2_qbv6m")
+
+[node name="AudioEmitter" type="Node" parent="."]
+script = ExtResource("2_d1vdg")
+sound_bank = ExtResource("3_k40va")

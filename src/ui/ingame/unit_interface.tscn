@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqk6u5dxdkh4m"]
+
+[ext_resource type="Script" uid="uid://bw0gm2tgho2a6" path="res://src/ui/ingame/unit_interface.gd" id="1_4q06i"]
+
+[node name="UnitInterface" type="Camera2D"]
+zoom = Vector2(1.25, 1.25)
+script = ExtResource("1_4q06i")
+
+[node name="Static" type="CanvasLayer" parent="."]
+
+[node name="DynamicUnit" type="CanvasLayer" parent="."]
+layer = 3
+follow_viewport_enabled = true
+
+[node name="DynamicMouse" type="CanvasLayer" parent="."]
+layer = 2

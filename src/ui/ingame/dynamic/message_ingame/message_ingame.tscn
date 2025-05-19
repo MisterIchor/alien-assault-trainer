@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjcahoef4rd24"]
+
+[ext_resource type="Script" uid="uid://ccpst2dgjolgk" path="res://src/ui/ingame/dynamic/message_ingame/message_ingame.gd" id="1_h3vg3"]
+
+[node name="MessageIngame" type="RichTextLabel"]
+self_modulate = Color(1, 1, 1, 0)
+pivot_offset = Vector2(100, 50)
+size_flags_horizontal = 0
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+shortcut_keys_enabled = false
+script = ExtResource("1_h3vg3")
+message = "Where is everybody?"
+color = Color(1, 1, 1, 1)
+text_speed = 0.01
+fade_in_time = 0.15
+fade_out_time = 0.15
+expiration_time = 0.5
+metadata/_edit_use_anchors_ = true

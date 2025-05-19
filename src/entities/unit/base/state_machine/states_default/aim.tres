@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="UnitState" load_steps=2 format=3 uid="uid://dpg072aaf80og"]
+
+[ext_resource type="Script" uid="uid://cphtcieyjaamj" path="res://src/entities/unit/base/state_machine/unit_state.gd" id="1_hp4bv"]
+
+[resource]
+resource_name = "aim"
+script = ExtResource("1_hp4bv")
+name = "aim"
+trans-timeout/time_in_state = 0.0
+trans-timeout/next_state = ""
+trans-run/start = ""
+trans-run/stop = ""
+trans-sprint/start = "sprint"
+trans-sprint/stop = ""
+trans-aim/start = ""
+trans-aim/stop = "run"
+trans-dodge/start = "dodge"
+trans-collision/collided = ""
+trans-health/critical = ""
+trans-health/incapacitated = ""
+conval-health/regen_cap_mod = 1.0
+conval-health/regen_rate = 0.0
+conval-stamina/regen_cap_mod = 1.0
+conval-stamina/regen_rate = 0.5
+conval-stamina/regen_rate_moving = 0.3
+conval-combat/melee_damage_mod = 1.0
+conval-combat/ranged_accuracy_mod = 1.0
+conval-movement/type = 2
+conval-movement/default_speed_mod = 0.2
+conval-interaction/allow_pickup = true
+conval-interaction/allow_drop = true
+conval-interaction/allow_env_interaction = true
+conval-interaction/allow_equipped_item_interaction = true
+conval-animation/head_look_at = 0
+conval-animation/body_procedural_speed = {
+&"body_lower": 1.0,
+&"body_upper": 1.0,
+&"head": 1.0
+}
+conval-animation/animation_to_play = null
+metadata/_custom_type_script = "uid://cphtcieyjaamj"

@@ -1,0 +1,51 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c15vgibt0tnss"]
+
+[ext_resource type="Script" uid="uid://blvlbne1srrqf" path="res://src/entities/unit/base/state_machine/unit_state_amogus.gd" id="1_pvuse"]
+
+[resource]
+resource_local_to_scene = true
+resource_name = "Dodge"
+script = ExtResource("1_pvuse")
+name = "Dodge"
+prefix = ""
+time_in_state = 0.5
+on_run_start = ""
+on_run_stop = ""
+on_run_ignore_prefix = false
+on_aim_start = ""
+on_aim_stop = ""
+on_aim_ignore_prefix = false
+on_sprint_start = ""
+on_sprint_stop = ""
+on_sprint_ignore_prefix = false
+on_dodge = ""
+on_dodge_ignore_prefix = false
+on_timeout = "Run"
+on_timeout_ignore_prefix = false
+on_health_critical = ""
+on_incapacitated = ""
+on_health_ignore_prefix = false
+on_collision = ""
+on_collision_ignore_prefix = false
+health_cost = 0.0
+health_regen_cap_mod = 1.0
+health_regen_rate = 0.0
+stamina_cost = 15.0
+stamina_regen_cap_mod = 1.0
+stamina_regen_rate = 0.0
+stamina_regen_rate_moving = -1337.0
+melee_damage_mod = 1.0
+ranged_accuracy_mod = 1.0
+movement_type = 3
+default_speed_mod = 1.5
+allow_pickup = true
+allow_drop = false
+allow_env_interaction = false
+allow_equipped_item_interaction = false
+head_look_at = 0
+body_procedural_speed = {
+"body_lower": 0.09,
+"body_upper": 0.12,
+"head": 0.15
+}
+configurable_values = {}

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dv00xin6em5o4"]
+
+[ext_resource type="Script" uid="uid://d31xtaky28scq" path="res://src/detection/radial_detection/radial_detection.gd" id="1_crbid"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rr0om"]
+
+[node name="RadialDetection" type="Area2D"]
+collision_layer = 0
+script = ExtResource("1_crbid")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rr0om")

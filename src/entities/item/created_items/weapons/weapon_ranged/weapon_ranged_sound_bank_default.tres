@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="SoundBank" load_steps=13 format=3 uid="uid://bvwhxulp2ltme"]
+
+[ext_resource type="Script" uid="uid://bwflbdvlrqoq0" path="res://src/emitters/audio_emitter/sound_bank/sound_bank.gd" id="1_qq0vo"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_gcdrf"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_2jhk3"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_x0h13"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hu1pl"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_sjvqq"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_2vrj4"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_rqbas"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ik677"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_muwgk"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_tdj4g"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_vvkxt"]
+
+[resource]
+script = ExtResource("1_qq0vo")
+_category_name = ""
+_add_category = false
+_category = {
+"dropped": SubResource("AudioStreamRandomizer_gcdrf"),
+"equipped": SubResource("AudioStreamRandomizer_2jhk3"),
+"hit": SubResource("AudioStreamRandomizer_x0h13"),
+"pickup": SubResource("AudioStreamRandomizer_hu1pl"),
+"rechambered": SubResource("AudioStreamRandomizer_sjvqq"),
+"reload_finished": SubResource("AudioStreamRandomizer_2vrj4"),
+"reload_started": SubResource("AudioStreamRandomizer_rqbas"),
+"reloaded_one": SubResource("AudioStreamRandomizer_ik677"),
+"shoot_failed": SubResource("AudioStreamRandomizer_muwgk"),
+"shoot_success": SubResource("AudioStreamRandomizer_tdj4g"),
+"used": SubResource("AudioStreamRandomizer_vvkxt")
+}

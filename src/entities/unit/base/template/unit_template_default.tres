@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EntityTemplate" load_steps=3 format=3 uid="uid://ogrrq27wfrcx"]
+
+[ext_resource type="Script" uid="uid://c4ilvkq2t6y0q" path="res://src/entities/base/template_old/template_entity_old.gd" id="1_pij2o"]
+[ext_resource type="Script" uid="uid://bjaw8nv1ulsnf" path="res://src/entities/unit/base/unit_setup.gd" id="2_hn7jj"]
+
+[resource]
+resource_name = "Unit"
+script = ExtResource("1_pij2o")
+name = "Unit"
+setup_script = ExtResource("2_hn7jj")
+configurable_values = Dictionary[String, Dictionary]({})
+_tags_primary = ""
+_tags_secondary = ""
