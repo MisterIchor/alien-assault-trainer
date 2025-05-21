@@ -2,6 +2,33 @@
 class_name AudioEmitter
 extends Node
 
+## Versatile audio player with support for audio banks.
+##
+## AudioEmitter plays sounds organized into sound banks. These sound banks sorts sounds into AudioStreamRandomizers,
+## so sounds are played randomly. More information about that can be found in sound_bank.gd. 
+##[br][br]
+## You can use AudioEmitter as a regular AudioPlayer though the play_sound functions. Alternatively,
+## you can also connect signal from other Objects to AudioEmitter, so that when that signal is emitted,
+## AudioEmitter will play a sound from the assigned category.
+##[br][br]
+## _signal_tracker is formatted as such:
+##[codeblock]
+##{
+##    NodePath = {
+##    signal_name = category_name
+##    }
+##}
+##[/codeblock]
+## Use the editor to add signals or use [method add_signal] to add them via script.
+##[br][br]
+## When a new entry is added to _signal_tracker, it gets the node from NodePath and 
+## connects the signal signal_name to AudioEmitter. It will play a sound from category_name whenever the 
+## signal is emitted from that node. In addition, you have the choice of playing a sound from any of the 
+## three types of AudioStreamPlayers. If a sound is played because of a tracked signal, it will choose 
+## a player appropriate for the type of node the signal comes from.
+##[br][br]
+## Once an AudioStreamPlayer is done playing, it will be freed.
+
 @export var sound_bank: SoundBank = load("res://src/ent/emitters/audio_emitter/sound_bank/sound_bank_default.tres")
 @export var audio_bus: String = "Master"
 @export_group("Signal Tracker")
@@ -18,31 +45,6 @@ extends Node
 @export var _signal_tracker: Dictionary = {}
 
 
-"""
-AudioEmitter plays sounds organized into sound banks. These sound banks sorts sounds into AudioStreamRandomizers,
-so sounds are played randomly. More information about that can be found in sound_bank.gd. 
-
-You can use AudioEmitter as a regular AudioPlayer though the play_sound functions. Alternatively,
-you can also connect signal from other Objects to AudioEmitter, so that when that signal is emitted,
-AudioEmitter will play a sound from the assigned category.
-
-_signal_tracker is formatted as such:
-	{
-		NodePath = {
-			signal_name = category_name
-		}
-	}
-
-Use the editor to add signals or use add_signal to add them via script.
-
-When a new entry is added to _signal_tracker, it gets the node from NodePath and 
-connects the signal signal_name to AudioEmitter. It will play a sound from category_name whenever the 
-signal is emitted from that node. In addition, you have the choice of playing a sound from any of the 
-three types of AudioStreamPlayers. If a sound is played because of a tracked signal, it will choose 
-a player appropriate for the type of node the signal comes from.
- 
-Once an AudioStreamPlayer is done playing, it will be freed.
-"""
 
 
 func _ready() -> void:
@@ -51,6 +53,10 @@ func _ready() -> void:
 			for sig in _signal_tracker[path]:
 				_connect_signal(path, sig)
 
+
+
+func _add_player(player) -> void:
+	return
 
 
 func _connect_signal(from_node: String, signal_name) -> void:
