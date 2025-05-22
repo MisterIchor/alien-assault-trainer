@@ -19,7 +19,9 @@
 				"f45bb950-e56e-4e75-ba2c-a4455f4c85ca",
 				"9c1b3e34-609f-4fca-a14f-c1c264becde7",
 				"c84ca4b6-d819-44fc-9693-0edd4b2cd3c9",
-				"d86b4fa4-c5ac-4a13-b406-ab7d2532dc5e"
+				"d86b4fa4-c5ac-4a13-b406-ab7d2532dc5e",
+				"ee0e4138-1993-4500-b30b-8fd7934b5869",
+				"0d67943c-431e-4c28-9d16-482402d60266"
 			]
 		},
 		{
@@ -157,6 +159,20 @@
 		{
 			"uuid": "d86b4fa4-c5ac-4a13-b406-ab7d2532dc5e",
 			"title": "Improve SoundBank tools",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		},
+		{
+			"uuid": "ee0e4138-1993-4500-b30b-8fd7934b5869",
+			"title": "Improve Projectile distance height drop-off",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		},
+		{
+			"uuid": "0d67943c-431e-4c28-9d16-482402d60266",
+			"title": "Create mapping tools",
 			"description": "",
 			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
 			"steps": []
