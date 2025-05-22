@@ -16,7 +16,8 @@
 				"4a4e9072-8ba6-494a-85d6-9f78979e5a86",
 				"34809269-0e4f-42a1-94a8-6f5456802a52",
 				"e9bdb086-7ebb-4d9e-8533-a99c17e39aa1",
-				"f45bb950-e56e-4e75-ba2c-a4455f4c85ca"
+				"f45bb950-e56e-4e75-ba2c-a4455f4c85ca",
+				"9c1b3e34-609f-4fca-a14f-c1c264becde7"
 			]
 		},
 		{
@@ -121,6 +122,13 @@
 		{
 			"uuid": "c9606835-1d74-4a7d-9459-7f9a1f143cf7",
 			"title": "Flesh out AudioEmitterPlayer2D",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		},
+		{
+			"uuid": "9c1b3e34-609f-4fca-a14f-c1c264becde7",
+			"title": "Create dynamic music system",
 			"description": "",
 			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
 			"steps": []
