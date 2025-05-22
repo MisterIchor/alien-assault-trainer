@@ -11,7 +11,7 @@ extends Node
 ## you can also connect signal from other Objects to AudioEmitter, so that when that signal is emitted,
 ## AudioEmitter will play a sound from the assigned category.
 ##[br][br]
-## _signal_tracker is formatted as such:
+## _tracked_signals is formatted as such:
 ##[codeblock]
 ##{
 ##    NodePath = {
@@ -21,7 +21,7 @@ extends Node
 ##[/codeblock]
 ## Use the editor to add signals or use [method add_signal] to add them via script.
 ##[br][br]
-## When a new entry is added to _signal_tracker, it gets the node from NodePath and 
+## When a new entry is added to _tracked_signals, it gets the node from NodePath and 
 ## connects the signal signal_name to AudioEmitter. It will play a sound from category_name whenever the 
 ## signal is emitted from that node. In addition, you have the choice of playing a sound from any of the 
 ## three types of AudioStreamPlayers. If a sound is played because of a tracked signal, it will choose 
@@ -29,29 +29,181 @@ extends Node
 ##[br][br]
 ## Once an AudioStreamPlayer is done playing, it will be freed.
 
+enum ToolMode {ADD, REMOVE}
+
 @export var sound_bank: SoundBank = load("res://src/ent/emitters/audio_emitter/sound_bank/sound_bank_default.tres")
 @export var audio_bus: String = "Master"
-@export_group("Signal Tracker")
-@export var _node_path: NodePath = NodePath()
-@export var _signal_name: String = ""
-@export var _category_to_play: String = ""
-@export var _add_signal: bool = false:
-	set(value):
-		if value:
-			_signal_tracker.get_or_add(_node_path, {})[_signal_name] = _category_to_play
-			notify_property_list_changed()
-			_signal_name = ""
-			_category_to_play = ""
-@export var _signal_tracker: Dictionary = {}
+@export var players_follow_parent_node: bool = false
+@export var players_interruptible: bool = false
+
+@export_storage var _tracked_signals: Dictionary[NodePath, Array] = {}
+var _tool_mode: ToolMode = ToolMode.ADD
+var _node_path: NodePath = NodePath()
+var _signal_name: String = ""
+var _add_signal_callable: Callable = add_signal
+var _remove_signal_callable: Callable
 
 
 
 
 func _ready() -> void:
-	if not _signal_tracker.is_empty():
-		for path in _signal_tracker:
-			for sig in _signal_tracker[path]:
-				_connect_signal(path, sig)
+	if Engine.is_editor_hint():
+		AudioServer.bus_layout_changed.connect(notify_property_list_changed)
+		AudioServer.bus_renamed.connect(notify_property_list_changed)
+
+
+
+func _get_property_list() -> Array[Dictionary]:
+	var property_list: Array[Dictionary] = []
+	
+	property_list.append({
+		name = "Tracked Signals",
+		type = TYPE_NIL,
+		usage = PROPERTY_USAGE_GROUP,
+		hint_string = "tracksig-"
+	})
+	
+	property_list.append({
+		name = "tracksig-tool_mode",
+		type = TYPE_INT,
+		hint = PROPERTY_HINT_ENUM,
+		hint_string = JILibrary.convert_enum_keys_to_string(ToolMode)
+	})
+	
+	property_list.append({
+		name = "tracksig-node",
+		type = TYPE_NODE_PATH,
+		hint = PROPERTY_HINT_NODE_PATH_VALID_TYPES
+	})
+	
+	property_list.append({
+		name = "tracksig-signal",
+		type = TYPE_STRING,
+		hint = PROPERTY_HINT_ENUM,
+		hint_string = _get_list_of_signals_as_string(get_node_or_null(_node_path))
+	})
+	
+	property_list.append({
+		name = "tracksig-signal_button",
+		type = TYPE_CALLABLE,
+		usage = PROPERTY_USAGE_EDITOR,
+		hint = PROPERTY_HINT_TOOL_BUTTON,
+		hint_string = "Add Signal" if _tool_mode == ToolMode.ADD else "Remove Signal"
+	})
+	
+	for node_path in _tracked_signals:
+		property_list.append({
+			name = str(node_path, " (", get_node(node_path).get_script().resource_path.get_file(), ")").replace("/", "\\"),
+			type = TYPE_NIL,
+			usage = PROPERTY_USAGE_SUBGROUP,
+			hint_string = str("sigdict-", node_path)
+		})
+		
+		for signal_dict in _tracked_signals[node_path]:
+			property_list.append({
+				name = str("sigdict-", node_path.get_concatenated_names().replace("/", "\\"), ":", signal_dict.signal.get_name()),
+				type = TYPE_STRING
+			})
+	
+	return property_list
+
+
+func _set(property: StringName, value: Variant) -> bool:
+	if property.begins_with("tracksig-"):
+		var property_name: String = property.get_slice("-", 1)
+		
+		if property_name == "tool_mode":
+			_tool_mode = value
+			notify_property_list_changed()
+			return true
+		
+		if property_name == "node":
+			_node_path = value
+			notify_property_list_changed()
+			return true
+		
+		if property_name == "signal_button":
+			_add_signal_callable = value
+			return true
+		
+		if property_name == "signal":
+			_signal_name = value
+			return true
+	
+	if property.begins_with("sigdict-"):
+		var sigdict: Dictionary = _convert_sigdict_prop_name_to_dict(property)
+		
+		for i in _tracked_signals[sigdict.node_path]:
+			if sigdict.signal_name.match(i.signal.get_name()):
+				i.category_name = value
+				return true
+	
+	return false
+
+
+func _get(property: StringName) -> Variant:
+	if property.begins_with("tracksig-"):
+		var property_name: String = property.get_slice("-", 1)
+		
+		if property_name == "tool_mode":
+			return _tool_mode
+		
+		if property_name == "node":
+			return _node_path
+		
+		if property_name == "signal_button":
+			return _add_signal_callable.bind(_node_path, _signal_name, "")
+		
+		if property_name == "signal":
+			return _signal_name
+	
+	if property.begins_with("sigdict-"):
+		var sigdict: Dictionary = _convert_sigdict_prop_name_to_dict(property)
+		
+		for i in _tracked_signals[sigdict.node_path]:
+			if sigdict.signal_name.match(i.signal.get_name()):
+				return i.category_name
+	
+	return
+
+
+func _property_can_revert(property: StringName) -> bool:
+	if property.begins_with("tracksig-"):
+		var property_name: String = property.get_slice("-", 1)
+		
+		if property_name == "node":
+			return true
+		
+		if property_name == "signal":
+			return true
+	
+	if property.begins_with("sigdict-"):
+		var sigdict: Dictionary = _convert_sigdict_prop_name_to_dict(property)
+		return is_signal_tracked(sigdict.node_path, sigdict.signal_name)
+	
+	return false
+
+
+func _property_get_revert(property: StringName) -> Variant:
+	if property.begins_with("tracksig-"):
+		var property_name: String = property.get_slice("-", 1)
+		
+		if property_name == "node":
+			return NodePath()
+		
+		if property_name == "signal":
+			if not _node_path.is_empty():
+				return get_node(_node_path).get_signal_list()[0].name
+			
+			return ""
+	
+	if property.begins_with("sigdict-"):
+		var sigdict: Dictionary = _convert_sigdict_prop_name_to_dict(property)
+		
+		if is_signal_tracked(sigdict.node_path, sigdict.signal_name):
+			return ""
+	
+	return
 
 
 
@@ -59,7 +211,21 @@ func _add_player(player) -> void:
 	return
 
 
-func _connect_signal(from_node: String, signal_name) -> void:
+func _get_list_of_signals_as_string(node: Node) -> String:
+	if not node:
+		return ""
+	
+	var signal_list: PackedStringArray = []
+	
+	for i in node.get_signal_list():
+		if not i.name.begins_with("_"):
+			signal_list.append(i.name)
+	
+	return ",".join(signal_list)
+
+
+
+func _connect_signal(from_node: String, signal_name: String) -> void:
 	var node: Node = get_node_or_null(from_node)
 	var call: Callable = JILibrary.get_signal_callable_unbinded(node, signal_name, _on_tracked_signal_emitted)
 
@@ -69,14 +235,73 @@ func _connect_signal(from_node: String, signal_name) -> void:
 	node.connect(signal_name, call.bind(from_node, signal_name))
 
 
+func _convert_sigdict_prop_name_to_dict(property_name: String) -> Dictionary:
+	var node_path_signal_arr: Array = property_name.trim_prefix("sigdict-").split(":")
+	
+	node_path_signal_arr[0] = node_path_signal_arr[0].replace("\\", "/")
+	node_path_signal_arr[0] = NodePath(node_path_signal_arr[0])
+	return {node_path = node_path_signal_arr[0], signal_name = node_path_signal_arr[1]}
+
+
 
 func add_signal(from_node: NodePath, signal_name: String, category_to_play: String) -> void:
-	_signal_tracker[from_node] = {signal_name = category_to_play}
+	if is_signal_tracked(from_node, signal_name):
+		return
 	
-	if not is_inside_tree():
+	var node: Node = get_node_or_null(from_node)
+	
+	if not node:
+		printerr("AudioEmitter: node at path %s does not exist." % [from_node])
+		return
+	
+	if not node.has_signal(signal_name):
+		printerr("AudioEmitter: signal %s does not exists in node at path %s." % [signal_name, from_node])
+		return
+	
+	if not _tracked_signals.get(from_node):
+		_tracked_signals[from_node] = []
+	
+	if not is_node_ready():
 		await ready
 	
-	_connect_signal(from_node, signal_name)
+	var new_signal: Dictionary = {
+		"signal": Signal(node, signal_name),
+		"category_name": category_to_play,
+		"callable": JILibrary.get_signal_callable_unbinded(node, signal_name, _on_tracked_signal_emitted)
+	}
+	
+	new_signal.signal.connect(new_signal.callable)
+	_tracked_signals[from_node].append(new_signal)
+	notify_property_list_changed()
+
+
+func remove_signal(from_node: NodePath, signal_name: String) -> void:
+	if not is_signal_tracked(from_node, signal_name):
+		return
+	
+	for i in _tracked_signals[from_node]:
+		if signal_name.matchn(i.signal.get_name()):
+			i.signal.disconnect(i.callable)
+			_tracked_signals[from_node].erase(i)
+			return
+	
+	printerr("AudioEmitter: could not find signal %s in node %s in list of tracked signals." % [signal_name, from_node])
+
+
+func is_signal_tracked(from_node: NodePath, signal_name: String) -> bool:
+	if not is_node_tracked(from_node):
+		printerr("AudioEmitter: node %s does not exist in list of tracked signals." % [from_node])
+		return false
+	
+	for i in _tracked_signals.get(from_node):
+		if signal_name.matchn(i.signal.get_name()):
+			return true
+	
+	return false
+
+
+func is_node_tracked(node: NodePath) -> bool:
+	return not _tracked_signals.get(node) == null
 
 
 func play_sound(category: String, pitch_range: float = 1.0) -> void:
@@ -149,9 +374,9 @@ func _on_tracked_signal_emitted(node_path: NodePath, signal_name: String) -> voi
 	if not node:
 		return
 	
-	if node is Node2D:
-		play_sound_2D(node.position, _signal_tracker[node_path][signal_name])
-	elif node is Node3D:
-		play_sound_3D(node.position, _signal_tracker[node_path][signal_name])
-	else:
-		play_sound(_signal_tracker[node_path][signal_name])
+	#if node is Node2D:
+		#play_sound_2D(node.position, _tracked_signals[node_path][signal_name])
+	#elif node is Node3D:
+		#play_sound_3D(node.position, _tracked_signals[node_path][signal_name])
+	#else:
+		#play_sound(_tracked_signals[node_path][signal_name])
