@@ -14,21 +14,22 @@ signal requested_property_sent(requester: Attribute, property_ref: PropertyRef)
 ## within [EntityStateMachine.states] to handle collision behavior within [method EntityState._handle_collision].
 @export var body: CollisionObject2D = null:
 	set = set_body
-## Template used for this [Entity]. Setting this value with a new [EntityTemplate] requires that this
-## tags within [member _template_primary_tag_requirements] are found when [EntityTemplate.get_tags_primary]
+## Template used for this [Entity]. Setting this value with a new [EntityInitializer] requires that this
+## tags within [member _template_primary_tag_requirements] are found when [EntityInitializer.get_tags_primary]
 ## is called. Otherwise, [member template] will remain the same.
-var template: EntityTemplate = null:
+var template: EntityInitializer = null:
 	set = set_template
 @onready var state_machine: EntityStateMachine = $EntityStateMachine
+@onready var audio_emitter: AudioEmitter = $AudioEmitter
 
 ## A [PackedStringArray] containing tags that are required when setting [member template].
-## If the new [EntityTemplate] does not have all of the primary tags within this array, [member template]
+## If the new [EntityInitializer] does not have all of the primary tags within this array, [member template]
 ## will not be set and remain as the previous value.
 var _template_primary_tag_requirements: PackedStringArray = []
-## A set of tags that will be return in addition to [method EntityTemplate.get_tags_primary] when
+## A set of tags that will be return in addition to [method EntityInitializer.get_tags_primary] when
 ## [method get_tags_primary] is called.
 var _additional_primary_tags: PackedStringArray = []
-## The default name for this entity.
+## The default name for this entity. Replace this when extending this class.
 var _default_name: String = "Entity"
 
 
@@ -38,7 +39,7 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	body_entered.connect(state_machine._handle_collision)
+	body_entered.connect(state_machine._on_collision)
 
 
 func _process(delta: float) -> void:
@@ -63,7 +64,7 @@ func set_body(new_body: PhysicsBody2D) -> void:
 
 
 ## Setter for [member template].
-func set_template(new_template: EntityTemplate) -> void:
+func set_template(new_template: EntityInitializer) -> void:
 	if new_template:
 		for i in _template_primary_tag_requirements:
 			if not i in new_template.get_tags_primary():
@@ -88,7 +89,7 @@ func set_template(new_template: EntityTemplate) -> void:
 
 ## Returns the primary tags this [Entity] possess. This includes the tags found in
 ## [member _additional_primary_tags] and, if [member template] is set, the tags acquired
-## from [method EntityTemplate.get_tags_primary]. 
+## from [method EntityInitializer.get_tags_primary]. 
 func get_tags_primary() -> PackedStringArray:
 	var tags: PackedStringArray = _additional_primary_tags.duplicate()
 	
@@ -98,7 +99,7 @@ func get_tags_primary() -> PackedStringArray:
 	return tags
 
 
-## Returns the tags found within [method EntityTemplate.get_tags_secondary]. If
+## Returns the tags found within [method EntityInitializer.get_tags_secondary]. If
 ## [member template] is [param null], return an empty array.
 func get_tags_secondary() -> PackedStringArray:
 	return template.get_tags_secondary() if template else []
