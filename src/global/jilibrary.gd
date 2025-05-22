@@ -12,6 +12,18 @@ static func get_from_dictionary_index(dict: Dictionary, idx: int) -> Variant:
 	return dict[dict.keys()[idx]]
 
 
+static func convert_enum_keys_to_string(enumerator: Dictionary) -> String:
+	if not is_potential_enum(enumerator):
+		return ""
+	
+	var keys_string: PackedStringArray = []
+	
+	for i in enumerator.keys():
+		keys_string.append(str(i, ":", enumerator[i]))
+	
+	return ",".join(keys_string)
+
+
 ## Returns [param signal_callable] with its original arguments removed. This allows for a signal with arguments 
 ## to connect to a method without arguments. Requires that the [param object] has [param signal_name] defined.
 static func get_signal_callable_unbinded(object_with_signal: Object, signal_name: String, signal_callable: Callable) -> Callable:
