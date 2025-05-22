@@ -70,23 +70,31 @@
 		{
 			"uuid": "957bc4f0-fa95-49e1-87b3-25c7463c9c7b",
 			"title": "Improve AudioEmitter",
-			"description": "After getting a bit more experienced with making tools, it's time to improve the tools for AudioEmitter.",
+			"description": "After getting a bit more experienced with making tools, it's time to improve the tools for AudioEmitter as well as add a few features for it.",
 			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
 			"steps": [
 				{
 					"details": "Move \"Signal Tracker' exported variables to _get_property_list, _get, _set, etc...",
-					"done": false
+					"done": true
 				},
 				{
 					"details": "Add UI for each added signal",
-					"done": false
+					"done": true
 				},
 				{
 					"details": "Retreive a list of signals from the target NodePath and return it as a list of options to choose from ",
-					"done": false
+					"done": true
 				},
 				{
 					"details": "Simplify \"play_sound_*\" functions",
+					"done": false
+				},
+				{
+					"details": "Add option to make players follow the parent node",
+					"done": false
+				},
+				{
+					"details": "Add option to make players interruptable (i.e. only one player at a time)",
 					"done": false
 				}
 			]
