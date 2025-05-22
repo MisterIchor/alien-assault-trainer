@@ -17,7 +17,9 @@
 				"34809269-0e4f-42a1-94a8-6f5456802a52",
 				"e9bdb086-7ebb-4d9e-8533-a99c17e39aa1",
 				"f45bb950-e56e-4e75-ba2c-a4455f4c85ca",
-				"9c1b3e34-609f-4fca-a14f-c1c264becde7"
+				"9c1b3e34-609f-4fca-a14f-c1c264becde7",
+				"c84ca4b6-d819-44fc-9693-0edd4b2cd3c9",
+				"d86b4fa4-c5ac-4a13-b406-ab7d2532dc5e"
 			]
 		},
 		{
@@ -87,14 +89,18 @@
 				},
 				{
 					"details": "Simplify \"play_sound_*\" functions",
-					"done": false
+					"done": true
 				},
 				{
 					"details": "Add option to make players follow the parent node",
-					"done": false
+					"done": true
 				},
 				{
 					"details": "Add option to make players interruptable (i.e. only one player at a time)",
+					"done": true
+				},
+				{
+					"details": "Document AudioEmitter",
 					"done": false
 				}
 			]
@@ -137,6 +143,20 @@
 		{
 			"uuid": "9c1b3e34-609f-4fca-a14f-c1c264becde7",
 			"title": "Create dynamic music system",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		},
+		{
+			"uuid": "c84ca4b6-d819-44fc-9693-0edd4b2cd3c9",
+			"title": "Document LightEmitterTemplate",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		},
+		{
+			"uuid": "d86b4fa4-c5ac-4a13-b406-ab7d2532dc5e",
+			"title": "Improve SoundBank tools",
 			"description": "",
 			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
 			"steps": []
