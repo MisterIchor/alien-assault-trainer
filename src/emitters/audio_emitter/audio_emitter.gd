@@ -30,10 +30,14 @@ extends Node
 ## Once an AudioStreamPlayer is done playing, it will be freed.
 
 enum ToolMode {ADD, REMOVE}
+enum PlayerType {NORMAL, TWO_DIMEN, THREE_DIMEN}
 
-@export var sound_bank: SoundBank = load("res://src/ent/emitters/audio_emitter/sound_bank/sound_bank_default.tres")
+@export var sound_bank: SoundBank = load("res://src/emitters/audio_emitter/sound_bank/sound_bank_default.tres")
 @export var audio_bus: String = "Master"
-@export var players_follow_parent_node: bool = false
+@export var players_follow_parent_node: bool = false:
+	set(value):
+		players_follow_parent_node = value
+		set_process(players_follow_parent_node)
 @export var players_interruptible: bool = false
 
 @export_storage var _tracked_signals: Dictionary[NodePath, Array] = {}
@@ -45,11 +49,18 @@ var _remove_signal_callable: Callable = remove_signal
 
 
 
-
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		AudioServer.bus_layout_changed.connect(notify_property_list_changed)
 		AudioServer.bus_renamed.connect(notify_property_list_changed)
+
+
+func _process(delta: float) -> void:
+	for i in get_children():
+		if i is AudioStreamPlayer2D and get_parent() is Node2D:
+			i.global_position = get_parent().global_position
+		elif i is AudioStreamPlayer3D and get_parent() is Node3D:
+			i.global_position = get_parent().global_position
 
 
 
@@ -217,10 +228,6 @@ func _property_get_revert(property: StringName) -> Variant:
 
 
 
-func _add_player(player) -> void:
-	return
-
-
 func _get_list_of_signals_as_string(node: Node) -> String:
 	if not node:
 		return ""
@@ -258,6 +265,19 @@ func _sigdict_get_formatted_string(node_path: NodePath, signal_name: String) -> 
 	return str("sigdict-", node_path_str.replace("/", "\\"), ":", signal_name)
 
 
+func _get_audio_stream_randomizer(category_name: String) -> AudioStreamRandomizer:
+	if not sound_bank:
+		return null
+	
+	var category_to_play: AudioStreamRandomizer = sound_bank.get_category(category_name)
+	
+	if not category_to_play:
+		printerr("AudioEmitter: Sound bank category not found: %s" % category_name)
+	
+	return category_to_play
+
+
+
 func add_signal(from_node: NodePath, signal_name: String, category_to_play: String) -> void:
 	if is_signal_tracked(from_node, signal_name):
 		return
@@ -273,7 +293,6 @@ func add_signal(from_node: NodePath, signal_name: String, category_to_play: Stri
 		return
 	
 	if not _tracked_signals.get(from_node):
-		print(from_node)
 		_tracked_signals[from_node] = []
 	
 	if not is_node_ready():
@@ -288,6 +307,27 @@ func add_signal(from_node: NodePath, signal_name: String, category_to_play: Stri
 	new_signal.signal.connect(new_signal.callable)
 	_tracked_signals[from_node].append(new_signal)
 	notify_property_list_changed()
+
+
+func get_signal_dict(from_node: NodePath, signal_name: String) -> Dictionary:
+	if not is_node_tracked(from_node):
+		printerr("AudioEmitter: cannot get signal dict from non-existant node %s" % [from_node])
+		return {}
+	
+	for i in _tracked_signals[from_node]:
+		if signal_name.matchn(i.signal.get_name()):
+			return i
+	
+	return {}
+
+
+func get_category_of_signal(from_node: NodePath, signal_name: String) -> String:
+	var signal_dict: Dictionary = get_signal_dict(from_node, signal_name)
+	
+	if signal_dict.is_empty():
+		return ""
+	
+	return signal_dict.category_name
 
 
 func remove_signal(from_node: NodePath, signal_name: String) -> void:
@@ -320,64 +360,41 @@ func is_node_tracked(node: NodePath) -> bool:
 	return not _tracked_signals.get(node) == null
 
 
-func play_sound(category: String, pitch_range: float = 1.0) -> void:
-	var audio_stream: AudioStreamRandomizer = _get_audio_stream_randomizer(category)
+func play_sound(type: PlayerType, category_name: String, pitch_range: float = 0.0, global_pos: Variant = null) -> void:
+	var audio_stream: AudioStreamRandomizer = _get_audio_stream_randomizer(category_name)
 	
 	if not audio_stream:
 		return
 	
-	var player: AudioStreamPlayer = AudioStreamPlayer.new()
+	var player: Node = null
+	
+	match type:
+		PlayerType.NORMAL:
+			player = AudioStreamPlayer.new()
+		PlayerType.TWO_DIMEN:
+			player = AudioStreamPlayer2D.new()
+			
+			if typeof(global_pos) == TYPE_VECTOR2:
+				player.global_position = global_pos
+		PlayerType.THREE_DIMEN:
+			player = AudioStreamPlayer3D.new()
+			
+			if typeof(global_pos) == TYPE_VECTOR3:
+				player.global_position = global_pos
 	
 	player.finished.connect(_on_AudioPlayer_finished.bind(player), CONNECT_DEFERRED)
 	player.stream = audio_stream
 	player.bus = audio_bus
+	player.pitch_scale = randf_range(1.0 - pitch_range, 1.0 + pitch_range)
+	
+	if players_interruptible:
+		for i in get_children():
+			i.stop()
+			i. queue_free()
+	
 	add_child(player)
 	player.play()
 
-
-func play_sound_2D(position: Vector2, category: String, pitch_range: float = 1.0) -> void:
-	var audio_stream: AudioStreamRandomizer = _get_audio_stream_randomizer(category)
-	
-	if not audio_stream:
-		return
-	
-	var player: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
-	
-	player.finished.connect(_on_AudioPlayer_finished.bind(player), CONNECT_DEFERRED)
-	player.stream = audio_stream
-	player.position = position
-	player.bus = audio_bus
-	add_child(player)
-	player.play()
-
-
-func play_sound_3D(position: Vector3, category: String, pitch_range: float = 1.0) -> void:
-	var audio_stream: AudioStreamRandomizer = _get_audio_stream_randomizer(category)
-	
-	if not audio_stream:
-		return
-	
-	var player: AudioStreamPlayer3D = AudioStreamPlayer3D.new()
-	
-	player.finished.connect(_on_AudioPlayer_finished.bind(player), CONNECT_DEFERRED)
-	player.stream = audio_stream
-	player.position = position
-	player.bus = audio_bus
-	add_child(player)
-	player.play()
-
-
-
-func _get_audio_stream_randomizer(category_name: String) -> AudioStreamRandomizer:
-	if not sound_bank:
-		return null
-	
-	var category_to_play: AudioStreamRandomizer = sound_bank.get_category(category_name)
-	
-	if not category_to_play:
-		printerr("AudioEmitter: Sound bank category not found: %s" % category_name)
-	
-	return category_to_play
 
 
 func _on_AudioPlayer_finished(player: Node) -> void:
@@ -386,13 +403,14 @@ func _on_AudioPlayer_finished(player: Node) -> void:
 
 func _on_tracked_signal_emitted(node_path: NodePath, signal_name: String) -> void:
 	var node: Node = get_node_or_null(node_path)
+	var category: String = get_category_of_signal(node_path, signal_name)
 	
 	if not node:
 		return
 	
-	#if node is Node2D:
-		#play_sound_2D(node.position, _tracked_signals[node_path][signal_name])
-	#elif node is Node3D:
-		#play_sound_3D(node.position, _tracked_signals[node_path][signal_name])
-	#else:
-		#play_sound(_tracked_signals[node_path][signal_name])
+	if node is Node2D:
+		play_sound(PlayerType.TWO_DIMEN, category, 0.0, node.position)
+	elif node is Node3D:
+		play_sound(PlayerType.THREE_DIMEN, category, 0.0, node.position)
+	else:
+		play_sound(PlayerType.NORMAL, category, 0.0)
