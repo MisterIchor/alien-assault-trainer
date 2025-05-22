@@ -1,0 +1,144 @@
+{
+	"categories": [
+		{
+			"uuid": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"title": "Task",
+			"color": "699ce8"
+		}
+	],
+	"stages": [
+		{
+			"uuid": "65ca3709-8de9-47c1-afca-ac75dc81e8ca",
+			"title": "Todo",
+			"tasks": [
+				"ecf5a2d9-265e-45cc-964a-3bc2f838bf32",
+				"5f93e9b1-1ed4-4ca7-8095-dc3efe1032e7",
+				"4a4e9072-8ba6-494a-85d6-9f78979e5a86",
+				"34809269-0e4f-42a1-94a8-6f5456802a52",
+				"e9bdb086-7ebb-4d9e-8533-a99c17e39aa1",
+				"f45bb950-e56e-4e75-ba2c-a4455f4c85ca"
+			]
+		},
+		{
+			"uuid": "06a0fbf7-0b07-41ef-9b44-a825b5bd1fbb",
+			"title": "In Progress",
+			"tasks": [
+				"957bc4f0-fa95-49e1-87b3-25c7463c9c7b",
+				"6eee17ca-6bf7-4acd-ba6f-2c1d4b142471",
+				"c9606835-1d74-4a7d-9459-7f9a1f143cf7"
+			]
+		},
+		{
+			"uuid": "20098b20-82f0-4e5e-9b49-0ce8f69a1c2b",
+			"title": "Done",
+			"tasks": []
+		},
+		{
+			"uuid": "61be52b1-2ade-4185-bece-2eeaf1c69f12",
+			"title": "On Hold",
+			"tasks": []
+		},
+		{
+			"uuid": "fd23b80d-3b0a-4c18-a3f1-f8e88439ca1d",
+			"title": "Scrapped",
+			"tasks": []
+		}
+	],
+	"tasks": [
+		{
+			"uuid": "ecf5a2d9-265e-45cc-964a-3bc2f838bf32",
+			"title": "Create ranged weaponry",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		},
+		{
+			"uuid": "5f93e9b1-1ed4-4ca7-8095-dc3efe1032e7",
+			"title": "Create melee weaponry",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		},
+		{
+			"uuid": "4a4e9072-8ba6-494a-85d6-9f78979e5a86",
+			"title": "Create Left 4 Dead/Outbreak-styled Vocalizer",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		},
+		{
+			"uuid": "957bc4f0-fa95-49e1-87b3-25c7463c9c7b",
+			"title": "Improve AudioEmitter",
+			"description": "After getting a bit more experienced with making tools, it's time to improve the tools for AudioEmitter.",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": [
+				{
+					"details": "Move \"Signal Tracker' exported variables to _get_property_list, _get, _set, etc...",
+					"done": false
+				},
+				{
+					"details": "Add UI for each added signal",
+					"done": false
+				},
+				{
+					"details": "Retreive a list of signals from the target NodePath and return it as a list of options to choose from ",
+					"done": false
+				},
+				{
+					"details": "Simplify \"play_sound_*\" functions",
+					"done": false
+				}
+			]
+		},
+		{
+			"uuid": "34809269-0e4f-42a1-94a8-6f5456802a52",
+			"title": "Create AI Controller for Units",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		},
+		{
+			"uuid": "6eee17ca-6bf7-4acd-ba6f-2c1d4b142471",
+			"title": "Give Attributes a way to connects signals to an Entity's AudioEmitter",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		},
+		{
+			"uuid": "e9bdb086-7ebb-4d9e-8533-a99c17e39aa1",
+			"title": "Create an animation system for Units",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		},
+		{
+			"uuid": "f45bb950-e56e-4e75-ba2c-a4455f4c85ca",
+			"title": "Rework UnitState to work with EntityInitializer",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		},
+		{
+			"uuid": "c9606835-1d74-4a7d-9459-7f9a1f143cf7",
+			"title": "Flesh out AudioEmitterPlayer2D",
+			"description": "",
+			"category": "94511a38-88fd-4d1d-ac1b-664b1df8f4de",
+			"steps": []
+		}
+	],
+	"layout": {
+		"columns": [
+			[
+				"65ca3709-8de9-47c1-afca-ac75dc81e8ca"
+			],
+			[
+				"06a0fbf7-0b07-41ef-9b44-a825b5bd1fbb",
+				"61be52b1-2ade-4185-bece-2eeaf1c69f12"
+			],
+			[
+				"20098b20-82f0-4e5e-9b49-0ce8f69a1c2b",
+				"fd23b80d-3b0a-4c18-a3f1-f8e88439ca1d"
+			]
+		]
+	}
+}
