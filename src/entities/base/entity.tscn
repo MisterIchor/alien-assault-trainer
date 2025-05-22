@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://b14i3s0en1y23"]
+[gd_scene load_steps=5 format=3 uid="uid://b14i3s0en1y23"]
 
 [ext_resource type="Script" uid="uid://bpvevv7ggtptj" path="res://src/entities/base/state_machine/entity.gd" id="1_2ol82"]
 [ext_resource type="Script" uid="uid://5ijf2exeu2e7" path="res://src/entities/base/state_machine/entity_state_machine.gd" id="2_klexf"]
+[ext_resource type="Script" uid="uid://qeqo0epyhch8" path="res://src/emitters/audio_emitter/audio_emitter.gd" id="3_lqa3h"]
+[ext_resource type="Resource" uid="uid://crnkaa17h5mkq" path="res://src/emitters/audio_emitter/sound_bank/sound_bank_default.tres" id="4_6pi24"]
 
 [node name="Entity" type="Node2D"]
 script = ExtResource("1_2ol82")
@@ -9,3 +11,15 @@ script = ExtResource("1_2ol82")
 [node name="EntityStateMachine" type="Node" parent="."]
 script = ExtResource("2_klexf")
 metadata/_custom_type_script = "uid://5ijf2exeu2e7"
+
+[node name="AudioEmitter" type="Node" parent="."]
+script = ExtResource("3_lqa3h")
+sound_bank = ExtResource("4_6pi24")
+_tracked_signals = Dictionary[NodePath, Array]({
+NodePath("../EntityStateMachine"): [],
+NodePath(".."): []
+})
+tracksig-tool_mode = 1
+tracksig-node = NodePath("../EntityStateMachine")
+tracksig-signal = "ready"
+metadata/_custom_type_script = "uid://qeqo0epyhch8"
