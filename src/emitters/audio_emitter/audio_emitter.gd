@@ -41,7 +41,7 @@ var _tool_mode: ToolMode = ToolMode.ADD
 var _node_path: NodePath = NodePath()
 var _signal_name: String = ""
 var _add_signal_callable: Callable = add_signal
-var _remove_signal_callable: Callable
+var _remove_signal_callable: Callable = remove_signal
 
 
 
@@ -93,15 +93,16 @@ func _get_property_list() -> Array[Dictionary]:
 	
 	for node_path in _tracked_signals:
 		property_list.append({
+			# Returns "Nodepath (name of script file)"
 			name = str(node_path, " (", get_node(node_path).get_script().resource_path.get_file(), ")").replace("/", "\\"),
 			type = TYPE_NIL,
 			usage = PROPERTY_USAGE_SUBGROUP,
-			hint_string = str("sigdict-", node_path)
+			hint_string = str("sigdict-", node_path.get_concatenated_names().replace("/", "\\"), ":")
 		})
 		
 		for signal_dict in _tracked_signals[node_path]:
 			property_list.append({
-				name = str("sigdict-", node_path.get_concatenated_names().replace("/", "\\"), ":", signal_dict.signal.get_name()),
+				name = _sigdict_get_formatted_string(node_path, signal_dict.signal.get_name()),
 				type = TYPE_STRING
 			})
 	
@@ -123,7 +124,12 @@ func _set(property: StringName, value: Variant) -> bool:
 			return true
 		
 		if property_name == "signal_button":
-			_add_signal_callable = value
+			if _tool_mode == ToolMode.ADD:
+				_add_signal_callable = value
+			
+			if _tool_mode == ToolMode.REMOVE:
+				_remove_signal_callable = value
+			
 			return true
 		
 		if property_name == "signal":
@@ -131,7 +137,7 @@ func _set(property: StringName, value: Variant) -> bool:
 			return true
 	
 	if property.begins_with("sigdict-"):
-		var sigdict: Dictionary = _convert_sigdict_prop_name_to_dict(property)
+		var sigdict: Dictionary = _sigdict_convert_formatted_string_to_dict(property)
 		
 		for i in _tracked_signals[sigdict.node_path]:
 			if sigdict.signal_name.match(i.signal.get_name()):
@@ -152,13 +158,17 @@ func _get(property: StringName) -> Variant:
 			return _node_path
 		
 		if property_name == "signal_button":
-			return _add_signal_callable.bind(_node_path, _signal_name, "")
+			if _tool_mode == ToolMode.ADD:
+				return _add_signal_callable.bind(_node_path, _signal_name, "")
+			
+			if _tool_mode == ToolMode.REMOVE:
+				return _remove_signal_callable.bind(_node_path, _signal_name)
 		
 		if property_name == "signal":
 			return _signal_name
 	
 	if property.begins_with("sigdict-"):
-		var sigdict: Dictionary = _convert_sigdict_prop_name_to_dict(property)
+		var sigdict: Dictionary = _sigdict_convert_formatted_string_to_dict(property)
 		
 		for i in _tracked_signals[sigdict.node_path]:
 			if sigdict.signal_name.match(i.signal.get_name()):
@@ -178,7 +188,7 @@ func _property_can_revert(property: StringName) -> bool:
 			return true
 	
 	if property.begins_with("sigdict-"):
-		var sigdict: Dictionary = _convert_sigdict_prop_name_to_dict(property)
+		var sigdict: Dictionary = _sigdict_convert_formatted_string_to_dict(property)
 		return is_signal_tracked(sigdict.node_path, sigdict.signal_name)
 	
 	return false
@@ -198,7 +208,7 @@ func _property_get_revert(property: StringName) -> Variant:
 			return ""
 	
 	if property.begins_with("sigdict-"):
-		var sigdict: Dictionary = _convert_sigdict_prop_name_to_dict(property)
+		var sigdict: Dictionary = _sigdict_convert_formatted_string_to_dict(property)
 		
 		if is_signal_tracked(sigdict.node_path, sigdict.signal_name):
 			return ""
@@ -235,13 +245,17 @@ func _connect_signal(from_node: String, signal_name: String) -> void:
 	node.connect(signal_name, call.bind(from_node, signal_name))
 
 
-func _convert_sigdict_prop_name_to_dict(property_name: String) -> Dictionary:
+func _sigdict_convert_formatted_string_to_dict(property_name: String) -> Dictionary:
 	var node_path_signal_arr: Array = property_name.trim_prefix("sigdict-").split(":")
 	
 	node_path_signal_arr[0] = node_path_signal_arr[0].replace("\\", "/")
 	node_path_signal_arr[0] = NodePath(node_path_signal_arr[0])
 	return {node_path = node_path_signal_arr[0], signal_name = node_path_signal_arr[1]}
 
+
+func _sigdict_get_formatted_string(node_path: NodePath, signal_name: String) -> String:
+	var node_path_str: String = node_path.get_concatenated_names()
+	return str("sigdict-", node_path_str.replace("/", "\\"), ":", signal_name)
 
 
 func add_signal(from_node: NodePath, signal_name: String, category_to_play: String) -> void:
@@ -259,6 +273,7 @@ func add_signal(from_node: NodePath, signal_name: String, category_to_play: Stri
 		return
 	
 	if not _tracked_signals.get(from_node):
+		print(from_node)
 		_tracked_signals[from_node] = []
 	
 	if not is_node_ready():
@@ -283,6 +298,7 @@ func remove_signal(from_node: NodePath, signal_name: String) -> void:
 		if signal_name.matchn(i.signal.get_name()):
 			i.signal.disconnect(i.callable)
 			_tracked_signals[from_node].erase(i)
+			notify_property_list_changed()
 			return
 	
 	printerr("AudioEmitter: could not find signal %s in node %s in list of tracked signals." % [signal_name, from_node])
